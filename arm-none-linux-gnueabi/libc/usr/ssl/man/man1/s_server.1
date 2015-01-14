@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "S_SERVER 1"
-.TH S_SERVER 1 "2004-11-17" "0.9.8d" "OpenSSL"
+.TH S_SERVER 1 "2015-01-08" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -138,6 +138,8 @@ s_server \- SSL/TLS server program
 [\fB\-context id\fR]
 [\fB\-verify depth\fR]
 [\fB\-Verify depth\fR]
+[\fB\-crl_check\fR]
+[\fB\-crl_check_all\fR]
 [\fB\-cert filename\fR]
 [\fB\-certform DER|PEM\fR]
 [\fB\-key keyfile\fR]
@@ -159,6 +161,7 @@ s_server \- SSL/TLS server program
 [\fB\-CAfile filename\fR]
 [\fB\-nocert\fR]
 [\fB\-cipher cipherlist\fR]
+[\fB\-serverpref\fR]
 [\fB\-quiet\fR]
 [\fB\-no_tmp_rsa\fR]
 [\fB\-ssl2\fR]
@@ -168,14 +171,22 @@ s_server \- SSL/TLS server program
 [\fB\-no_ssl3\fR]
 [\fB\-no_tls1\fR]
 [\fB\-no_dhe\fR]
+[\fB\-no_ecdhe\fR]
 [\fB\-bugs\fR]
 [\fB\-hack\fR]
 [\fB\-www\fR]
 [\fB\-WWW\fR]
 [\fB\-HTTP\fR]
 [\fB\-engine id\fR]
+[\fB\-tlsextdebug\fR]
+[\fB\-no_ticket\fR]
 [\fB\-id_prefix arg\fR]
 [\fB\-rand file(s)\fR]
+[\fB\-status\fR]
+[\fB\-status_verbose\fR]
+[\fB\-status_timeout nsec\fR]
+[\fB\-status_url url\fR]
+[\fB\-nextprotoneg protocols\fR]
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
 The \fBs_server\fR command implements a generic \s-1SSL/TLS\s0 server which listens
@@ -221,7 +232,7 @@ a server can support clients which only support \s-1RSA\s0 or \s-1DSS\s0 cipher 
 by using an appropriate certificate.
 .IP "\fB\-dcertform format\fR, \fB\-dkeyform format\fR, \fB\-dpass arg\fR" 4
 .IX Item "-dcertform format, -dkeyform format, -dpass arg"
-addtional certificate and private key format and passphrase respectively.
+additional certificate and private key format and passphrase respectively.
 .IP "\fB\-nocert\fR" 4
 .IX Item "-nocert"
 if this option is set then no certificate is used. This restricts the
@@ -237,6 +248,10 @@ a static set of parameters hard coded into the s_server program will be used.
 .IX Item "-no_dhe"
 if this option is set then no \s-1DH\s0 parameters will be loaded effectively
 disabling the ephemeral \s-1DH\s0 cipher suites.
+.IP "\fB\-no_ecdhe\fR" 4
+.IX Item "-no_ecdhe"
+if this option is set then no \s-1ECDH\s0 parameters will be loaded effectively
+disabling the ephemeral \s-1ECDH\s0 cipher suites.
 .IP "\fB\-no_tmp_rsa\fR" 4
 .IX Item "-no_tmp_rsa"
 certain export cipher suites sometimes use a temporary \s-1RSA\s0 key, this option
@@ -248,6 +263,14 @@ client certificate chain and makes the server request a certificate from
 the client. With the \fB\-verify\fR option a certificate is requested but the
 client does not have to send one, with the \fB\-Verify\fR option the client
 must supply a certificate or an error occurs.
+.Sp
+If the ciphersuite cannot request a client certificate (for example an
+anonymous ciphersuite or \s-1PSK\s0) this option has no effect.
+.IP "\fB\-crl_check\fR, \fB\-crl_check_all\fR" 4
+.IX Item "-crl_check, -crl_check_all"
+Check the peer certificate has not been revoked by its \s-1CA\s0.
+The \s-1CRL\s0(s) are appended to the certificate file. With the \fB\-crl_check_all\fR
+option all CRLs of all CAs in the chain are checked.
 .IP "\fB\-CApath directory\fR" 4
 .IX Item "-CApath directory"
 The directory to use for client certificate verification. This directory
@@ -280,6 +303,14 @@ this option translated a line feed from the terminal into \s-1CR+LF\s0.
 .IP "\fB\-quiet\fR" 4
 .IX Item "-quiet"
 inhibit printing of session and certificate information.
+.IP "\fB\-psk_hint hint\fR" 4
+.IX Item "-psk_hint hint"
+Use the \s-1PSK\s0 identity hint \fBhint\fR when using a \s-1PSK\s0 cipher suite.
+.IP "\fB\-psk key\fR" 4
+.IX Item "-psk key"
+Use the \s-1PSK\s0 key \fBkey\fR when using a \s-1PSK\s0 cipher suite. The key is
+given as a hexadecimal number without leading 0x, for example \-psk
+1a2b3c4d.
 .IP "\fB\-ssl2\fR, \fB\-ssl3\fR, \fB\-tls1\fR, \fB\-no_ssl2\fR, \fB\-no_ssl3\fR, \fB\-no_tls1\fR" 4
 .IX Item "-ssl2, -ssl3, -tls1, -no_ssl2, -no_ssl3, -no_tls1"
 these options disable the use of certain \s-1SSL\s0 or \s-1TLS\s0 protocols. By default
@@ -300,6 +331,15 @@ the client sends a list of supported ciphers the first client cipher
 also included in the server list is used. Because the client specifies
 the preference order, the order of the server cipherlist irrelevant. See
 the \fBciphers\fR command for more information.
+.IP "\fB\-serverpref\fR" 4
+.IX Item "-serverpref"
+use the server's cipher preferences, rather than the client's preferences.
+.IP "\fB\-tlsextdebug\fR" 4
+.IX Item "-tlsextdebug"
+print out a hex dump of any \s-1TLS\s0 extensions received from the server.
+.IP "\fB\-no_ticket\fR" 4
+.IX Item "-no_ticket"
+disable RFC4507bis session ticket support.
 .IP "\fB\-www\fR" 4
 .IX Item "-www"
 sends a status message back to the client when it connects. This includes
@@ -320,7 +360,7 @@ assumed to contain a complete and correct \s-1HTTP\s0 response (lines that
 are part of the \s-1HTTP\s0 response line and headers must end with \s-1CRLF\s0).
 .IP "\fB\-engine id\fR" 4
 .IX Item "-engine id"
-specifying an engine (by it's unique \fBid\fR string) will cause \fBs_server\fR
+specifying an engine (by its unique \fBid\fR string) will cause \fBs_server\fR
 to attempt to obtain a functional reference to the specified engine,
 thus initialising it if needed. The engine will then be set as the default
 for all available algorithms.
@@ -337,6 +377,28 @@ generator, or an \s-1EGD\s0 socket (see \fIRAND_egd\fR\|(3)).
 Multiple files can be specified separated by a OS-dependent character.
 The separator is \fB;\fR for MS-Windows, \fB,\fR for OpenVMS, and \fB:\fR for
 all others.
+.IP "\fB\-status\fR" 4
+.IX Item "-status"
+enables certificate status request support (aka \s-1OCSP\s0 stapling).
+.IP "\fB\-status_verbose\fR" 4
+.IX Item "-status_verbose"
+enables certificate status request support (aka \s-1OCSP\s0 stapling) and gives
+a verbose printout of the \s-1OCSP\s0 response.
+.IP "\fB\-status_timeout nsec\fR" 4
+.IX Item "-status_timeout nsec"
+sets the timeout for \s-1OCSP\s0 response to \fBnsec\fR seconds.
+.IP "\fB\-status_url url\fR" 4
+.IX Item "-status_url url"
+sets a fallback responder \s-1URL\s0 to use if no responder \s-1URL\s0 is present in the
+server certificate. Without this option an error is returned if the server
+certificate does not contain a responder address.
+.IP "\fB\-nextprotoneg protocols\fR" 4
+.IX Item "-nextprotoneg protocols"
+enable Next Protocol Negotiation \s-1TLS\s0 extension and provide a
+comma-separated list of supported protocol names.
+The list should contain most wanted protocols first.
+Protocol names are printable \s-1ASCII\s0 strings, for example \*(L"http/1.1\*(R" or
+\&\*(L"spdy/3\*(R".
 .SH "CONNECTED COMMANDS"
 .IX Header "CONNECTED COMMANDS"
 If a connection request is established with an \s-1SSL\s0 client and neither the

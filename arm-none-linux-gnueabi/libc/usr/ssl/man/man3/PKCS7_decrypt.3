@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "PKCS7_decrypt 3"
-.TH PKCS7_decrypt 3 "2002-10-09" "0.9.8d" "OpenSSL"
+.TH PKCS7_decrypt 3 "2014-07-23" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -133,7 +133,11 @@
 PKCS7_decrypt \- decrypt content from a PKCS#7 envelopedData structure
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
-int PKCS7_decrypt(\s-1PKCS7\s0 *p7, \s-1EVP_PKEY\s0 *pkey, X509 *cert, \s-1BIO\s0 *data, int flags);
+.Vb 1
+\& #include <openssl/pkcs7.h>
+\&
+\& int PKCS7_decrypt(PKCS7 *p7, EVP_PKEY *pkey, X509 *cert, BIO *data, int flags);
+.Ve
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
 \&\fIPKCS7_decrypt()\fR extracts and decrypts the content from a PKCS#7 envelopedData

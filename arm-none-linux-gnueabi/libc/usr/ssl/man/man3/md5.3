@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "md5 3"
-.TH md5 3 "2000-08-14" "0.9.8d" "OpenSSL"
+.TH md5 3 "2015-01-08" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -140,10 +140,10 @@ MD4_Final, MD5_Init, MD5_Update, MD5_Final \- MD2, MD4, and MD5 hash functions
 \& unsigned char *MD2(const unsigned char *d, unsigned long n,
 \&                  unsigned char *md);
 \&
-\& void MD2_Init(MD2_CTX *c);
-\& void MD2_Update(MD2_CTX *c, const unsigned char *data,
+\& int MD2_Init(MD2_CTX *c);
+\& int MD2_Update(MD2_CTX *c, const unsigned char *data,
 \&                  unsigned long len);
-\& void MD2_Final(unsigned char *md, MD2_CTX *c);
+\& int MD2_Final(unsigned char *md, MD2_CTX *c);
 \&
 \&
 \& #include <openssl/md4.h>
@@ -151,10 +151,10 @@ MD4_Final, MD5_Init, MD5_Update, MD5_Final \- MD2, MD4, and MD5 hash functions
 \& unsigned char *MD4(const unsigned char *d, unsigned long n,
 \&                  unsigned char *md);
 \&
-\& void MD4_Init(MD4_CTX *c);
-\& void MD4_Update(MD4_CTX *c, const void *data,
+\& int MD4_Init(MD4_CTX *c);
+\& int MD4_Update(MD4_CTX *c, const void *data,
 \&                  unsigned long len);
-\& void MD4_Final(unsigned char *md, MD4_CTX *c);
+\& int MD4_Final(unsigned char *md, MD4_CTX *c);
 \&
 \&
 \& #include <openssl/md5.h>
@@ -162,10 +162,10 @@ MD4_Final, MD5_Init, MD5_Update, MD5_Final \- MD2, MD4, and MD5 hash functions
 \& unsigned char *MD5(const unsigned char *d, unsigned long n,
 \&                  unsigned char *md);
 \&
-\& void MD5_Init(MD5_CTX *c);
-\& void MD5_Update(MD5_CTX *c, const void *data,
+\& int MD5_Init(MD5_CTX *c);
+\& int MD5_Update(MD5_CTX *c, const void *data,
 \&                  unsigned long len);
-\& void MD5_Final(unsigned char *md, MD5_CTX *c);
+\& int MD5_Final(unsigned char *md, MD5_CTX *c);
 .Ve
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
@@ -204,8 +204,8 @@ preferred.
 \&\s-1\fIMD2\s0()\fR, \s-1\fIMD4\s0()\fR, and \s-1\fIMD5\s0()\fR return pointers to the hash value.
 .PP
 \&\fIMD2_Init()\fR, \fIMD2_Update()\fR, \fIMD2_Final()\fR, \fIMD4_Init()\fR, \fIMD4_Update()\fR,
-\&\fIMD4_Final()\fR, \fIMD5_Init()\fR, \fIMD5_Update()\fR, and \fIMD5_Final()\fR do not return
-values.
+\&\fIMD4_Final()\fR, \fIMD5_Init()\fR, \fIMD5_Update()\fR, and \fIMD5_Final()\fR return 1 for
+success, 0 otherwise.
 .SH "CONFORMING TO"
 .IX Header "CONFORMING TO"
 \&\s-1RFC\s0 1319, \s-1RFC\s0 1320, \s-1RFC\s0 1321

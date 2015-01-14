@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "mdc2 3"
-.TH mdc2 3 "2000-02-26" "0.9.8d" "OpenSSL"
+.TH mdc2 3 "2015-01-08" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -139,10 +139,10 @@ MDC2, MDC2_Init, MDC2_Update, MDC2_Final \- MDC2 hash function
 \& unsigned char *MDC2(const unsigned char *d, unsigned long n,
 \&                  unsigned char *md);
 \&
-\& void MDC2_Init(MDC2_CTX *c);
-\& void MDC2_Update(MDC2_CTX *c, const unsigned char *data,
+\& int MDC2_Init(MDC2_CTX *c);
+\& int MDC2_Update(MDC2_CTX *c, const unsigned char *data,
 \&                  unsigned long len);
-\& void MDC2_Final(unsigned char *md, MDC2_CTX *c);
+\& int MDC2_Final(unsigned char *md, MDC2_CTX *c);
 .Ve
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
@@ -173,7 +173,7 @@ hash functions directly.
 .IX Header "RETURN VALUES"
 \&\s-1\fIMDC2\s0()\fR returns a pointer to the hash value.
 .PP
-\&\fIMDC2_Init()\fR, \fIMDC2_Update()\fR and \fIMDC2_Final()\fR do not return values.
+\&\fIMDC2_Init()\fR, \fIMDC2_Update()\fR and \fIMDC2_Final()\fR return 1 for success, 0 otherwise.
 .SH "CONFORMING TO"
 .IX Header "CONFORMING TO"
 \&\s-1ISO/IEC\s0 10118\-2, with \s-1DES\s0

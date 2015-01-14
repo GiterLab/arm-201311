@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "EC 1"
-.TH EC 1 "2003-07-21" "0.9.8d" "OpenSSL"
+.TH EC 1 "2014-10-15" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -164,7 +164,7 @@ PKCS#8 private key format use the \fBpkcs8\fR command.
 .IX Item "-inform DER|PEM"
 This specifies the input format. The \fB\s-1DER\s0\fR option with a private key uses
 an \s-1ASN\s0.1 \s-1DER\s0 encoded \s-1SEC1\s0 private key. When used with a public key it
-uses the SubjectPublicKeyInfo structur as specified in \s-1RFC\s0 3280.
+uses the SubjectPublicKeyInfo structure as specified in \s-1RFC\s0 3280.
 The \fB\s-1PEM\s0\fR form is the default format: it consists of the \fB\s-1DER\s0\fR format base64
 encoded with additional header and footer lines. In the case of a private key
 PKCS#8 format is also accepted.
@@ -239,7 +239,7 @@ explicitly given (see \s-1RFC\s0 3279 for the definition of the
 is currently not implemented in OpenSSL.
 .IP "\fB\-engine id\fR" 4
 .IX Item "-engine id"
-specifying an engine (by it's unique \fBid\fR string) will cause \fBreq\fR
+specifying an engine (by its unique \fBid\fR string) will cause \fBec\fR
 to attempt to obtain a functional reference to the specified engine,
 thus initialising it if needed. The engine will then be set as the default
 for all available algorithms.

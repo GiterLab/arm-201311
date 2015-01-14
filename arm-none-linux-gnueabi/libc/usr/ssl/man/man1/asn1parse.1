@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "ASN1PARSE 1"
-.TH ASN1PARSE 1 "2004-11-26" "0.9.8d" "OpenSSL"
+.TH ASN1PARSE 1 "2015-01-08" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -142,6 +142,8 @@ asn1parse \- ASN.1 parsing tool
 [\fB\-length number\fR]
 [\fB\-i\fR]
 [\fB\-oid filename\fR]
+[\fB\-dump\fR]
+[\fB\-dlimit num\fR]
 [\fB\-strparse offset\fR]
 [\fB\-genstr string\fR]
 [\fB\-genconf file\fR]
@@ -179,6 +181,12 @@ indents the output according to the \*(L"depth\*(R" of the structures.
 .IX Item "-oid filename"
 a file containing additional \s-1OBJECT\s0 IDENTIFIERs (OIDs). The format of this
 file is described in the \s-1NOTES\s0 section below.
+.IP "\fB\-dump\fR" 4
+.IX Item "-dump"
+dump unknown data in hex format.
+.IP "\fB\-dlimit num\fR" 4
+.IX Item "-dlimit num"
+like \fB\-dump\fR, but only the first \fBnum\fR bytes are output.
 .IP "\fB\-strparse offset\fR" 4
 .IX Item "-strparse offset"
 parse the contents octets of the \s-1ASN\s0.1 object starting at \fBoffset\fR. This
@@ -186,11 +194,11 @@ option can be used multiple times to \*(L"drill down\*(R" into a nested structur
 .IP "\fB\-genstr string\fR, \fB\-genconf file\fR" 4
 .IX Item "-genstr string, -genconf file"
 generate encoded data based on \fBstring\fR, \fBfile\fR or both using
-\&\fIASN1_generate_nconf()\fR format. If \fBfile\fR only is present then the string
-is obtained from the default section using the name \fBasn1\fR. The encoded
-data is passed through the \s-1ASN1\s0 parser and printed out as though it came
-from a file, the contents can thus be examined and written to a file
-using the \fBout\fR option.
+\&\fIASN1_generate_nconf\fR\|(3) format. If \fBfile\fR only is
+present then the string is obtained from the default section using the name
+\&\fBasn1\fR. The encoded data is passed through the \s-1ASN1\s0 parser and printed out as
+though it came from a file, the contents can thus be examined and written to a
+file using the \fBout\fR option.
 .SS "\s-1OUTPUT\s0"
 .IX Subsection "OUTPUT"
 The output will typically contain lines like this:
@@ -292,3 +300,6 @@ Example config file:
 .IX Header "BUGS"
 There should be options to change the format of output lines. The output of some
 \&\s-1ASN\s0.1 types is not well handled (if at all).
+.SH "SEE ALSO"
+.IX Header "SEE ALSO"
+\&\fIASN1_generate_nconf\fR\|(3)

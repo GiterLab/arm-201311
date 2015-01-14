@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "RAND_bytes 3"
-.TH RAND_bytes 3 "2002-09-25" "0.9.8d" "OpenSSL"
+.TH RAND_bytes 3 "2014-07-23" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -152,6 +152,9 @@ unique if they are of sufficient length, but are not necessarily
 unpredictable. They can be used for non-cryptographic purposes and for
 certain purposes in cryptographic protocols, but usually not for key
 generation etc.
+.PP
+The contents of \fBbuf\fR is mixed into the entropy pool before retrieving
+the new pseudo-random bytes unless disabled at compile time (see \s-1FAQ\s0).
 .SH "RETURN VALUES"
 .IX Header "RETURN VALUES"
 \&\fIRAND_bytes()\fR returns 1 on success, 0 otherwise. The error code can be

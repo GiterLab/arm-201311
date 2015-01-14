@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "BIO_should_retry 3"
-.TH BIO_should_retry 3 "2000-09-17" "0.9.8d" "OpenSSL"
+.TH BIO_should_retry 3 "2014-07-23" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -173,7 +173,7 @@ needs to read data.
 \&\fIBIO_should_io_special()\fR is true if some \*(L"special\*(R" condition, that is a
 reason other than reading or writing is the cause of the condition.
 .PP
-\&\fIBIO_get_retry_reason()\fR returns a mask of the cause of a retry condition
+\&\fIBIO_retry_type()\fR returns a mask of the cause of a retry condition
 consisting of the values \fB\s-1BIO_FLAGS_READ\s0\fR, \fB\s-1BIO_FLAGS_WRITE\s0\fR,
 \&\fB\s-1BIO_FLAGS_IO_SPECIAL\s0\fR though current \s-1BIO\s0 types will only set one of
 these.

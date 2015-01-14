@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "ASN1_STRING_length 3"
-.TH ASN1_STRING_length 3 "2002-10-20" "0.9.8d" "OpenSSL"
+.TH ASN1_STRING_length 3 "2015-01-08" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -135,7 +135,9 @@ ASN1_STRING_length_set, ASN1_STRING_type, ASN1_STRING_data \-
 ASN1_STRING utility functions
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
-.Vb 2
+.Vb 1
+\& #include <openssl/asn1.h>
+\&
 \& int ASN1_STRING_length(ASN1_STRING *x);
 \& unsigned char * ASN1_STRING_data(ASN1_STRING *x);
 \&

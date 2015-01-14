@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "RAND_set_rand_method 3"
-.TH RAND_set_rand_method 3 "2002-08-06" "0.9.8d" "OpenSSL"
+.TH RAND_set_rand_method 3 "2014-07-23" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -158,7 +158,7 @@ true only whilst no \s-1ENGINE\s0 has been set as a default for \s-1RAND\s0, so 
 is no longer recommended.
 .PP
 \&\fIRAND_get_default_method()\fR returns a pointer to the current \s-1RAND_METHOD\s0.
-However, the meaningfulness of this result is dependant on whether the \s-1ENGINE\s0
+However, the meaningfulness of this result is dependent on whether the \s-1ENGINE\s0
 \&\s-1API\s0 is being used, so this function is no longer recommended.
 .SH "THE RAND_METHOD STRUCTURE"
 .IX Header "THE RAND_METHOD STRUCTURE"

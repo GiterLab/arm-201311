@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "d2i_X509 3"
-.TH d2i_X509 3 "2005-07-14" "0.9.8d" "OpenSSL"
+.TH d2i_X509 3 "2015-01-08" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -143,8 +143,8 @@ i2d_X509_fp \- X509 encode and decode functions
 \& X509 *d2i_X509_bio(BIO *bp, X509 **x);
 \& X509 *d2i_X509_fp(FILE *fp, X509 **x);
 \&
-\& int i2d_X509_bio(X509 *x, BIO *bp);
-\& int i2d_X509_fp(X509 *x, FILE *fp);
+\& int i2d_X509_bio(BIO *bp, X509 *x);
+\& int i2d_X509_fp(FILE *fp, X509 *x);
 .Ve
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
@@ -345,11 +345,11 @@ always succeed.
 or \fB\s-1NULL\s0\fR if an error occurs. The error code that can be obtained by
 \&\fIERR_get_error\fR\|(3).
 .PP
-\&\fIi2d_X509()\fR, \fIi2d_X509_bio()\fR and \fIi2d_X509_fp()\fR return a the number of bytes
-successfully encoded or a negative value if an error occurs. The error code
-can be obtained by \fIERR_get_error\fR\|(3).
+\&\fIi2d_X509()\fR returns the number of bytes successfully encoded or a negative
+value if an error occurs. The error code can be obtained by
+\&\fIERR_get_error\fR\|(3).
 .PP
-\&\fIi2d_X509_bio()\fR and \fIi2d_X509_fp()\fR returns 1 for success and 0 if an error 
+\&\fIi2d_X509_bio()\fR and \fIi2d_X509_fp()\fR return 1 for success and 0 if an error 
 occurs The error code can be obtained by \fIERR_get_error\fR\|(3).
 .SH "SEE ALSO"
 .IX Header "SEE ALSO"

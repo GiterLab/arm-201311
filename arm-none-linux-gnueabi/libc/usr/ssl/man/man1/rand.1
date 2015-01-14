@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "RAND 1"
-.TH RAND 1 "2001-09-07" "0.9.8d" "OpenSSL"
+.TH RAND 1 "2014-07-23" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -137,6 +137,7 @@ rand \- generate pseudo\-random bytes
 [\fB\-out\fR \fIfile\fR]
 [\fB\-rand\fR \fIfile(s)\fR]
 [\fB\-base64\fR]
+[\fB\-hex\fR]
 \&\fInum\fR
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
@@ -161,6 +162,9 @@ all others.
 .IP "\fB\-base64\fR" 4
 .IX Item "-base64"
 Perform base64 encoding on the output.
+.IP "\fB\-hex\fR" 4
+.IX Item "-hex"
+Show the output as a hex string.
 .SH "SEE ALSO"
 .IX Header "SEE ALSO"
 \&\fIRAND_bytes\fR\|(3)

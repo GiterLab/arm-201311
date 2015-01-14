@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "SMIME_read_PKCS7 3"
-.TH SMIME_read_PKCS7 3 "2002-10-09" "0.9.8d" "OpenSSL"
+.TH SMIME_read_PKCS7 3 "2014-07-23" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -133,7 +133,11 @@
 SMIME_read_PKCS7 \- parse S/MIME message.
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
-\&\s-1PKCS7\s0 *SMIME_read_PKCS7(\s-1BIO\s0 *in, \s-1BIO\s0 **bcont);
+.Vb 1
+\& #include <openssl/pkcs7.h>
+\&
+\& PKCS7 *SMIME_read_PKCS7(BIO *in, BIO **bcont);
+.Ve
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
 \&\fISMIME_read_PKCS7()\fR parses a message in S/MIME format.

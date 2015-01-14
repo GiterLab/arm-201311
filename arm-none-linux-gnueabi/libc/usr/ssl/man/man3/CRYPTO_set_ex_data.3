@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "CRYPTO_set_ex_data 3"
-.TH CRYPTO_set_ex_data 3 "2000-01-30" "0.9.8d" "OpenSSL"
+.TH CRYPTO_set_ex_data 3 "2014-07-23" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -134,6 +134,8 @@ CRYPTO_set_ex_data, CRYPTO_get_ex_data \- internal application specific data fun
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
 .Vb 1
+\& #include <openssl/crypto.h>
+\&
 \& int CRYPTO_set_ex_data(CRYPTO_EX_DATA *r, int idx, void *arg);
 \&
 \& void *CRYPTO_get_ex_data(CRYPTO_EX_DATA *r, int idx);

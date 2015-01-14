@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "OBJ_nid2obj 3"
-.TH OBJ_nid2obj 3 "2002-10-20" "0.9.8d" "OpenSSL"
+.TH OBJ_nid2obj 3 "2014-07-23" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -135,7 +135,9 @@ OBJ_cmp, OBJ_dup, OBJ_txt2obj, OBJ_obj2txt, OBJ_create, OBJ_cleanup \- ASN1 obje
 functions
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
-.Vb 3
+.Vb 1
+\& #include <openssl/objects.h>
+\&
 \& ASN1_OBJECT * OBJ_nid2obj(int n);
 \& const char *  OBJ_nid2ln(int n);
 \& const char *  OBJ_nid2sn(int n);

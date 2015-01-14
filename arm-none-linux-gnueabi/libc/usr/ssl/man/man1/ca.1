@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "CA 1"
-.TH CA 1 "2005-07-15" "0.9.8d" "OpenSSL"
+.TH CA 1 "2015-01-08" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -139,6 +139,8 @@ ca \- sample minimal CA application
 [\fB\-name section\fR]
 [\fB\-gencrl\fR]
 [\fB\-revoke file\fR]
+[\fB\-status serial\fR]
+[\fB\-updatedb\fR]
 [\fB\-crl_reason reason\fR]
 [\fB\-crl_hold instruction\fR]
 [\fB\-crl_compromise time\fR]
@@ -152,6 +154,7 @@ ca \- sample minimal CA application
 [\fB\-md arg\fR]
 [\fB\-policy arg\fR]
 [\fB\-keyfile arg\fR]
+[\fB\-keyform PEM|DER\fR]
 [\fB\-key arg\fR]
 [\fB\-passin arg\fR]
 [\fB\-cert file\fR]
@@ -201,7 +204,7 @@ a single self signed certificate to be signed by the \s-1CA\s0.
 .IX Item "-spkac filename"
 a file containing a single Netscape signed public key and challenge
 and additional field values to be signed by the \s-1CA\s0. See the \fB\s-1SPKAC\s0 \s-1FORMAT\s0\fR
-section for information on the required format.
+section for information on the required input and output format.
 .IP "\fB\-infiles\fR" 4
 .IX Item "-infiles"
 if present this should be the last option, all subsequent arguments
@@ -210,7 +213,7 @@ are assumed to the the names of files containing certificate requests.
 .IX Item "-out filename"
 the output file to output certificates to. The default is standard
 output. The certificate details will also be printed out to this
-file.
+file in \s-1PEM\s0 format (except that \fB\-spkac\fR outputs \s-1DER\s0 format).
 .IP "\fB\-outdir directory\fR" 4
 .IX Item "-outdir directory"
 the directory to output certificates to. The certificate will be
@@ -222,6 +225,10 @@ the \s-1CA\s0 certificate file.
 .IP "\fB\-keyfile filename\fR" 4
 .IX Item "-keyfile filename"
 the private key to sign requests with.
+.IP "\fB\-keyform PEM|DER\fR" 4
+.IX Item "-keyform PEM|DER"
+the format of the data in the private key file.
+The default is \s-1PEM\s0.
 .IP "\fB\-key password\fR" 4
 .IX Item "-key password"
 the password used to encrypt the private key. Since on some
@@ -303,7 +310,9 @@ the section of the configuration file containing certificate extensions
 to be added when a certificate is issued (defaults to \fBx509_extensions\fR
 unless the \fB\-extfile\fR option is used). If no extension section is
 present then, a V1 certificate is created. If the extension section
-is present (even if it is empty), then a V3 certificate is created.
+is present (even if it is empty), then a V3 certificate is created. See the:w
+\&\fIx509v3_config\fR\|(5) manual page for details of the
+extension section format.
 .IP "\fB\-extfile file\fR" 4
 .IX Item "-extfile file"
 an additional configuration file to read certificate extensions from
@@ -311,7 +320,7 @@ an additional configuration file to read certificate extensions from
 used).
 .IP "\fB\-engine id\fR" 4
 .IX Item "-engine id"
-specifying an engine (by it's unique \fBid\fR string) will cause \fBreq\fR
+specifying an engine (by its unique \fBid\fR string) will cause \fBca\fR
 to attempt to obtain a functional reference to the specified engine,
 thus initialising it if needed. The engine will then be set as the default
 for all available algorithms.
@@ -349,6 +358,13 @@ the number of hours before the next \s-1CRL\s0 is due.
 .IP "\fB\-revoke filename\fR" 4
 .IX Item "-revoke filename"
 a filename containing a certificate to revoke.
+.IP "\fB\-status serial\fR" 4
+.IX Item "-status serial"
+displays the revocation status of the certificate with the specified
+serial number and exits.
+.IP "\fB\-updatedb\fR" 4
+.IX Item "-updatedb"
+Updates the database index to purge expired certificates.
 .IP "\fB\-crl_reason reason\fR" 4
 .IX Item "-crl_reason reason"
 revocation reason, where \fBreason\fR is one of: \fBunspecified\fR, \fBkeyCompromise\fR,
@@ -379,7 +395,9 @@ include. If no \s-1CRL\s0 extension section is present then a V1 \s-1CRL\s0 is
 created, if the \s-1CRL\s0 extension section is present (even if it is
 empty) then a V2 \s-1CRL\s0 is created. The \s-1CRL\s0 extensions specified are
 \&\s-1CRL\s0 extensions and \fBnot\fR \s-1CRL\s0 entry extensions.  It should be noted
-that some software (for example Netscape) can't handle V2 CRLs.
+that some software (for example Netscape) can't handle V2 CRLs. See
+\&\fIx509v3_config\fR\|(5) manual page for details of the
+extension section format.
 .SH "CONFIGURATION FILE OPTIONS"
 .IX Header "CONFIGURATION FILE OPTIONS"
 The section of the configuration file containing options for \fBca\fR
@@ -542,6 +560,10 @@ The file should contain the variable \s-1SPKAC\s0 set to the value of
 the \s-1SPKAC\s0 and also the required \s-1DN\s0 components as name value pairs.
 If you need to include the same component twice then it can be
 preceded by a number and a '.'.
+.PP
+When processing \s-1SPKAC\s0 format, the output is \s-1DER\s0 if the \fB\-out\fR
+flag is used, but \s-1PEM\s0 format if sending to stdout or the \fB\-outdir\fR
+flag is used.
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
 Note: these examples assume that the \fBca\fR directory structure is
@@ -724,4 +746,4 @@ then even if a certificate is issued with \s-1CA:TRUE\s0 it will not be valid.
 .SH "SEE ALSO"
 .IX Header "SEE ALSO"
 \&\fIreq\fR\|(1), \fIspkac\fR\|(1), \fIx509\fR\|(1), \s-1\fICA\s0.pl\fR\|(1),
-\&\fIconfig\fR\|(5)
+\&\fIconfig\fR\|(5), \fIx509v3_config\fR\|(5)

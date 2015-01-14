@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "RSA_set_method 3"
-.TH RSA_set_method 3 "2002-09-25" "0.9.8d" "OpenSSL"
+.TH RSA_set_method 3 "2014-07-23" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -170,7 +170,7 @@ structures created later. \fB\s-1NB\s0\fR: This is true only whilst no \s-1ENGIN
 been set as a default for \s-1RSA\s0, so this function is no longer recommended.
 .PP
 \&\fIRSA_get_default_method()\fR returns a pointer to the current default
-\&\s-1RSA_METHOD\s0. However, the meaningfulness of this result is dependant on
+\&\s-1RSA_METHOD\s0. However, the meaningfulness of this result is dependent on
 whether the \s-1ENGINE\s0 \s-1API\s0 is being used, so this function is no longer 
 recommended.
 .PP
@@ -253,14 +253,18 @@ the default method is used.
 \&     /* sign. For backward compatibility, this is used only
 \&      * if (flags & RSA_FLAG_SIGN_VER)
 \&      */
-\&        int (*rsa_sign)(int type, unsigned char *m, unsigned int m_len,
-\&           unsigned char *sigret, unsigned int *siglen, RSA *rsa);
-\&
+\&        int (*rsa_sign)(int type,
+\&                const unsigned char *m, unsigned int m_length,
+\&                unsigned char *sigret, unsigned int *siglen, const RSA *rsa);
 \&     /* verify. For backward compatibility, this is used only
 \&      * if (flags & RSA_FLAG_SIGN_VER)
 \&      */
-\&        int (*rsa_verify)(int type, unsigned char *m, unsigned int m_len,
-\&           unsigned char *sigbuf, unsigned int siglen, RSA *rsa);
+\&        int (*rsa_verify)(int dtype,
+\&                const unsigned char *m, unsigned int m_length,
+\&                const unsigned char *sigbuf, unsigned int siglen,
+\&                                                                const RSA *rsa);
+\&     /* keygen. If NULL builtin RSA key generation will be used */
+\&        int (*rsa_keygen)(RSA *rsa, int bits, BIGNUM *e, BN_GENCB *cb);
 \&
 \& } RSA_METHOD;
 .Ve

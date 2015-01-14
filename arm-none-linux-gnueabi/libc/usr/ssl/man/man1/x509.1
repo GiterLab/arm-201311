@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "X509 1"
-.TH X509 1 "2005-04-04" "0.9.8d" "OpenSSL"
+.TH X509 1 "2015-01-08" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -145,15 +145,19 @@ x509 \- Certificate display and signing utility
 [\fB\-hash\fR]
 [\fB\-subject_hash\fR]
 [\fB\-issuer_hash\fR]
+[\fB\-ocspid\fR]
 [\fB\-subject\fR]
 [\fB\-issuer\fR]
 [\fB\-nameopt option\fR]
 [\fB\-email\fR]
+[\fB\-ocsp_uri\fR]
 [\fB\-startdate\fR]
 [\fB\-enddate\fR]
 [\fB\-purpose\fR]
 [\fB\-dates\fR]
+[\fB\-checkend num\fR]
 [\fB\-modulus\fR]
+[\fB\-pubkey\fR]
 [\fB\-fingerprint\fR]
 [\fB\-alias\fR]
 [\fB\-noout\fR]
@@ -166,6 +170,7 @@ x509 \- Certificate display and signing utility
 [\fB\-days arg\fR]
 [\fB\-set_serial n\fR]
 [\fB\-signkey filename\fR]
+[\fB\-passin arg\fR]
 [\fB\-x509toreq\fR]
 [\fB\-req\fR]
 [\fB\-CA filename\fR]
@@ -173,6 +178,7 @@ x509 \- Certificate display and signing utility
 [\fB\-CAcreateserial\fR]
 [\fB\-CAserial filename\fR]
 [\fB\-text\fR]
+[\fB\-certopt option\fR]
 [\fB\-C\fR]
 [\fB\-md2|\-md5|\-sha1|\-mdc2\fR]
 [\fB\-clrext\fR]
@@ -220,7 +226,7 @@ specified then \s-1SHA1\s0 is used. If the key being used to sign with is a \s-1
 then this option has no effect: \s-1SHA1\s0 is always used with \s-1DSA\s0 keys.
 .IP "\fB\-engine id\fR" 4
 .IX Item "-engine id"
-specifying an engine (by it's unique \fBid\fR string) will cause \fBreq\fR
+specifying an engine (by its unique \fBid\fR string) will cause \fBx509\fR
 to attempt to obtain a functional reference to the specified engine,
 thus initialising it if needed. The engine will then be set as the default
 for all available algorithms.
@@ -242,6 +248,9 @@ section for more information.
 .IP "\fB\-noout\fR" 4
 .IX Item "-noout"
 this option prevents output of the encoded version of the request.
+.IP "\fB\-pubkey\fR" 4
+.IX Item "-pubkey"
+outputs the the certificate's SubjectPublicKeyInfo block in \s-1PEM\s0 format.
 .IP "\fB\-modulus\fR" 4
 .IX Item "-modulus"
 this option prints out the value of the modulus of the public key
@@ -257,9 +266,20 @@ name.
 .IP "\fB\-issuer_hash\fR" 4
 .IX Item "-issuer_hash"
 outputs the \*(L"hash\*(R" of the certificate issuer name.
+.IP "\fB\-ocspid\fR" 4
+.IX Item "-ocspid"
+outputs the \s-1OCSP\s0 hash values for the subject name and public key.
 .IP "\fB\-hash\fR" 4
 .IX Item "-hash"
-synonym for \*(L"\-hash\*(R" for backward compatibility reasons.
+synonym for \*(L"\-subject_hash\*(R" for backward compatibility reasons.
+.IP "\fB\-subject_hash_old\fR" 4
+.IX Item "-subject_hash_old"
+outputs the \*(L"hash\*(R" of the certificate subject name using the older algorithm
+as used by OpenSSL versions before 1.0.0.
+.IP "\fB\-issuer_hash_old\fR" 4
+.IX Item "-issuer_hash_old"
+outputs the \*(L"hash\*(R" of the certificate issuer name using the older algorithm
+as used by OpenSSL versions before 1.0.0.
 .IP "\fB\-subject\fR" 4
 .IX Item "-subject"
 outputs the subject name.
@@ -275,6 +295,9 @@ set multiple options. See the \fB\s-1NAME\s0 \s-1OPTIONS\s0\fR section for more 
 .IP "\fB\-email\fR" 4
 .IX Item "-email"
 outputs the email address(es) if any.
+.IP "\fB\-ocsp_uri\fR" 4
+.IX Item "-ocsp_uri"
+outputs the \s-1OCSP\s0 responder address(es) if any.
 .IP "\fB\-startdate\fR" 4
 .IX Item "-startdate"
 prints out the start date of the certificate, that is the notBefore date.
@@ -284,6 +307,10 @@ prints out the expiry date of the certificate, that is the notAfter date.
 .IP "\fB\-dates\fR" 4
 .IX Item "-dates"
 prints out the start and expiry dates of a certificate.
+.IP "\fB\-checkend arg\fR" 4
+.IX Item "-checkend arg"
+checks if the certificate expires within the next \fBarg\fR seconds and exits
+non-zero if yes it will expire or zero if not.
 .IP "\fB\-fingerprint\fR" 4
 .IX Item "-fingerprint"
 prints out the digest of the \s-1DER\s0 encoded version of the whole certificate
@@ -367,6 +394,10 @@ the \fB\-clrext\fR option is supplied.
 If the input is a certificate request then a self signed certificate
 is created using the supplied private key using the subject name in
 the request.
+.IP "\fB\-passin arg\fR" 4
+.IX Item "-passin arg"
+the key password source. For more information about the format of \fBarg\fR
+see the \fB\s-1PASS\s0 \s-1PHRASE\s0 \s-1ARGUMENTS\s0\fR section in \fIopenssl\fR\|(1).
 .IP "\fB\-clrext\fR" 4
 .IX Item "-clrext"
 delete any extensions from a certificate. This option is used when a
@@ -439,7 +470,9 @@ no extensions are added to the certificate.
 the section to add certificate extensions from. If this option is not
 specified then the extensions should either be contained in the unnamed
 (default) section or the default section should contain a variable called
-\&\*(L"extensions\*(R" which contains the section to use.
+\&\*(L"extensions\*(R" which contains the section to use. See the
+\&\fIx509v3_config\fR\|(5) manual page for details of the
+extension section format.
 .SS "\s-1NAME\s0 \s-1OPTIONS\s0"
 .IX Subsection "NAME OPTIONS"
 The \fBnameopt\fR command line switch determines how the subject and issuer
@@ -459,12 +492,12 @@ displays names compatible with \s-1RFC2253\s0 equivalent to \fBesc_2253\fR, \fBe
 .IX Item "oneline"
 a oneline format which is more readable than \s-1RFC2253\s0. It is equivalent to
 specifying the  \fBesc_2253\fR, \fBesc_ctrl\fR, \fBesc_msb\fR, \fButf8\fR, \fBdump_nostr\fR,
-\&\fBdump_der\fR, \fBuse_quote\fR, \fBsep_comma_plus_spc\fR, \fBspc_eq\fR and \fBsname\fR
+\&\fBdump_der\fR, \fBuse_quote\fR, \fBsep_comma_plus_space\fR, \fBspace_eq\fR and \fBsname\fR
 options.
 .IP "\fBmultiline\fR" 4
 .IX Item "multiline"
 a multiline format. It is equivalent \fBesc_ctrl\fR, \fBesc_msb\fR, \fBsep_multiline\fR,
-\&\fBspc_eq\fR, \fBlname\fR and \fBalign\fR.
+\&\fBspace_eq\fR, \fBlname\fR and \fBalign\fR.
 .IP "\fBesc_2253\fR" 4
 .IX Item "esc_2253"
 escape the \*(L"special\*(R" characters required by \s-1RFC2253\s0 in a field That is
@@ -494,8 +527,8 @@ present then multibyte characters larger than 0xff will be represented
 using the format \eUXXXX for 16 bits and \eWXXXXXXXX for 32 bits.
 Also if this option is off any UTF8Strings will be converted to their
 character form first.
-.IP "\fBno_type\fR" 4
-.IX Item "no_type"
+.IP "\fBignore_type\fR" 4
+.IX Item "ignore_type"
 this option does not attempt to interpret multibyte characters in any
 way. That is their content octets are merely dumped as though one octet
 represents each character. This is useful for diagnostic purposes but
@@ -547,8 +580,8 @@ diagnostic purpose.
 .IX Item "align"
 align field values for a more readable output. Only usable with
 \&\fBsep_multiline\fR.
-.IP "\fBspc_eq\fR" 4
-.IX Item "spc_eq"
+.IP "\fBspace_eq\fR" 4
+.IX Item "space_eq"
 places spaces round the \fB=\fR character which follows the field
 name.
 .SS "\s-1TEXT\s0 \s-1OPTIONS\s0"
@@ -641,7 +674,7 @@ Display the certificate subject name in oneline form on a terminal
 supporting \s-1UTF8:\s0
 .PP
 .Vb 1
-\& openssl x509 \-in cert.pem \-noout \-subject \-nameopt oneline,\-escmsb
+\& openssl x509 \-in cert.pem \-noout \-subject \-nameopt oneline,\-esc_msb
 .Ve
 .PP
 Display the certificate \s-1MD5\s0 fingerprint:
@@ -844,7 +877,14 @@ OpenSSL 0.9.5 and later.
 .SH "SEE ALSO"
 .IX Header "SEE ALSO"
 \&\fIreq\fR\|(1), \fIca\fR\|(1), \fIgenrsa\fR\|(1),
-\&\fIgendsa\fR\|(1), \fIverify\fR\|(1)
+\&\fIgendsa\fR\|(1), \fIverify\fR\|(1),
+\&\fIx509v3_config\fR\|(5)
 .SH "HISTORY"
 .IX Header "HISTORY"
 Before OpenSSL 0.9.8, the default digest for \s-1RSA\s0 keys was \s-1MD5\s0.
+.PP
+The hash algorithm used in the \fB\-subject_hash\fR and \fB\-issuer_hash\fR options
+before OpenSSL 1.0.0 was based on the deprecated \s-1MD5\s0 algorithm and the encoding
+of the distinguished name. In OpenSSL 1.0.0 and later it is based on a
+canonical version of the \s-1DN\s0 using \s-1SHA1\s0. This means that any directories using
+the old form must have their links rebuilt using \fBc_rehash\fR or similar.

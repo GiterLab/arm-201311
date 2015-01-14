@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "ripemd 3"
-.TH ripemd 3 "2000-02-26" "0.9.8d" "OpenSSL"
+.TH ripemd 3 "2015-01-08" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -140,10 +140,10 @@ RIPEMD\-160 hash function
 \& unsigned char *RIPEMD160(const unsigned char *d, unsigned long n,
 \&                  unsigned char *md);
 \&
-\& void RIPEMD160_Init(RIPEMD160_CTX *c);
-\& void RIPEMD160_Update(RIPEMD_CTX *c, const void *data,
+\& int RIPEMD160_Init(RIPEMD160_CTX *c);
+\& int RIPEMD160_Update(RIPEMD_CTX *c, const void *data,
 \&                  unsigned long len);
-\& void RIPEMD160_Final(unsigned char *md, RIPEMD160_CTX *c);
+\& int RIPEMD160_Final(unsigned char *md, RIPEMD160_CTX *c);
 .Ve
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
@@ -174,8 +174,8 @@ hash functions directly.
 .IX Header "RETURN VALUES"
 \&\s-1\fIRIPEMD160\s0()\fR returns a pointer to the hash value.
 .PP
-\&\fIRIPEMD160_Init()\fR, \fIRIPEMD160_Update()\fR and \fIRIPEMD160_Final()\fR do not
-return values.
+\&\fIRIPEMD160_Init()\fR, \fIRIPEMD160_Update()\fR and \fIRIPEMD160_Final()\fR return 1 for
+success, 0 otherwise.
 .SH "CONFORMING TO"
 .IX Header "CONFORMING TO"
 \&\s-1ISO/IEC\s0 10118\-3 (draft) (??)

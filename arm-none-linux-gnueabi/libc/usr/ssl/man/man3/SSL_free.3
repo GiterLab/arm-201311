@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "SSL_free 3"
-.TH SSL_free 3 "2001-02-13" "0.9.8d" "OpenSSL"
+.TH SSL_free 3 "2014-07-23" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -142,7 +142,7 @@ SSL_free \- free an allocated SSL structure
 .IX Header "DESCRIPTION"
 \&\fISSL_free()\fR decrements the reference count of \fBssl\fR, and removes the \s-1SSL\s0
 structure pointed to by \fBssl\fR and frees up the allocated memory if the
-the reference count has reached 0.
+reference count has reached 0.
 .SH "NOTES"
 .IX Header "NOTES"
 \&\fISSL_free()\fR also calls the \fIfree()\fRing procedures for indirectly affected items, if

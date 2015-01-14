@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "X509_NAME_add_entry_by_txt 3"
-.TH X509_NAME_add_entry_by_txt 3 "2005-03-30" "0.9.8d" "OpenSSL"
+.TH X509_NAME_add_entry_by_txt 3 "2015-01-08" "1.0.1k" "OpenSSL"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -134,15 +134,19 @@ X509_NAME_add_entry_by_txt, X509_NAME_add_entry_by_OBJ, X509_NAME_add_entry_by_N
 X509_NAME_add_entry, X509_NAME_delete_entry \- X509_NAME modification functions
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
-int X509_NAME_add_entry_by_txt(X509_NAME *name, const char *field, int type, const unsigned char *bytes, int len, int loc, int set);
-.PP
-int X509_NAME_add_entry_by_OBJ(X509_NAME *name, \s-1ASN1_OBJECT\s0 *obj, int type, unsigned char *bytes, int len, int loc, int set);
-.PP
-int X509_NAME_add_entry_by_NID(X509_NAME *name, int nid, int type, unsigned char *bytes, int len, int loc, int set);
-.PP
-int X509_NAME_add_entry(X509_NAME *name,X509_NAME_ENTRY *ne, int loc, int set);
-.PP
-X509_NAME_ENTRY *X509_NAME_delete_entry(X509_NAME *name, int loc);
+.Vb 1
+\& #include <openssl/x509.h>
+\&
+\& int X509_NAME_add_entry_by_txt(X509_NAME *name, const char *field, int type, const unsigned char *bytes, int len, int loc, int set);
+\&
+\& int X509_NAME_add_entry_by_OBJ(X509_NAME *name, ASN1_OBJECT *obj, int type, unsigned char *bytes, int len, int loc, int set);
+\&
+\& int X509_NAME_add_entry_by_NID(X509_NAME *name, int nid, int type, unsigned char *bytes, int len, int loc, int set);
+\&
+\& int X509_NAME_add_entry(X509_NAME *name,X509_NAME_ENTRY *ne, int loc, int set);
+\&
+\& X509_NAME_ENTRY *X509_NAME_delete_entry(X509_NAME *name, int loc);
+.Ve
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
 \&\fIX509_NAME_add_entry_by_txt()\fR, \fIX509_NAME_add_entry_by_OBJ()\fR and
@@ -204,14 +208,14 @@ Create an \fBX509_NAME\fR structure:
 \& nm = X509_NAME_new();
 \& if (nm == NULL)
 \&        /* Some error */
-\& if (!X509_NAME_add_entry_by_txt(nm, MBSTRING_ASC,
-\&                        "C", "UK", \-1, \-1, 0))
+\& if (!X509_NAME_add_entry_by_txt(nm, "C", MBSTRING_ASC, 
+\&                        "UK", \-1, \-1, 0))
 \&        /* Error */
-\& if (!X509_NAME_add_entry_by_txt(nm, MBSTRING_ASC,
-\&                        "O", "Disorganized Organization", \-1, \-1, 0))
+\& if (!X509_NAME_add_entry_by_txt(nm, "O", MBSTRING_ASC,
+\&                        "Disorganized Organization", \-1, \-1, 0))
 \&        /* Error */
-\& if (!X509_NAME_add_entry_by_txt(nm, MBSTRING_ASC,
-\&                        "CN", "Joe Bloggs", \-1, \-1, 0))
+\& if (!X509_NAME_add_entry_by_txt(nm, "CN", MBSTRING_ASC,
+\&                        "Joe Bloggs", \-1, \-1, 0))
 \&        /* Error */
 .Ve
 .SH "RETURN VALUES"
