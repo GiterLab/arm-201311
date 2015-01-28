@@ -1,0 +1,14 @@
+prefix=/home/tobyzxj/workspace/arm-libs/build
+exec_prefix=/home/tobyzxj/workspace/arm-libs/build
+libdir=/home/tobyzxj/workspace/arm-libs/build/lib
+includedir=/home/tobyzxj/workspace/arm-libs/build/include/freetype2
+
+Name: FreeType 2
+URL: http://freetype.org
+Description: A free, high-quality, and portable font engine.
+Version: 17.4.11
+Requires:
+Requires.private: zlib, libpng
+Libs: -L${libdir} -lfreetype
+Libs.private: 
+Cflags: -I${includedir}
