@@ -1,4 +1,4 @@
-prefix=/home/tobyzxj/workspace/linux/libs/build
+prefix=/home/tobyzxj/workspace/arm-libs/build
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 sharedlibdir=${libdir}
