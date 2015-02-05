@@ -17,7 +17,7 @@ old_library='libharfbuzz.a'
 inherited_linker_flags=''
 
 # Libraries that this one depends upon.
-dependency_libs=' -L/home/tobyzxj/workspace/arm-libs/build/lib'
+dependency_libs=' -L/home/tobyzxj/workspace/arm-libs/build/lib -L/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/lib /home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/lib/libfreetype.la -lbz2 /home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/lib/libpng12.la -lz -lm /home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/lib/libharfbuzz.la'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
