@@ -1,0 +1,11 @@
+prefix=/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr
+exec_prefix=/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr
+libdir=/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/lib
+includedir=/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/include
+
+Name: harfbuzz
+Description: HarfBuzz text shaping library
+Version: 0.9.38
+
+Libs: -L${libdir} -lharfbuzz
+Cflags: -I${includedir}/harfbuzz
