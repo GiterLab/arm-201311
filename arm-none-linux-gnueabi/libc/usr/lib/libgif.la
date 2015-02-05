@@ -17,7 +17,7 @@ old_library='libgif.a'
 inherited_linker_flags=''
 
 # Libraries that this one depends upon.
-dependency_libs=' -L/home/tobyzxj/workspace/arm-libs/build/lib'
+dependency_libs=' -L/home/tobyzxj/workspace/arm-libs/build/lib -L/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/lib'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/home/tobyzxj/workspace/arm-libs/build/lib'
+libdir='/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/lib'
