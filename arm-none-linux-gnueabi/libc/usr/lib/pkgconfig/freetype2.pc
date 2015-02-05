@@ -1,7 +1,7 @@
-prefix=/home/tobyzxj/workspace/arm-libs/build
-exec_prefix=/home/tobyzxj/workspace/arm-libs/build
-libdir=/home/tobyzxj/workspace/arm-libs/build/lib
-includedir=/home/tobyzxj/workspace/arm-libs/build/include/freetype2
+prefix=/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr
+exec_prefix=/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr
+libdir=/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/lib
+includedir=/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/include/freetype2
 
 Name: FreeType 2
 URL: http://freetype.org

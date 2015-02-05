@@ -1,4 +1,4 @@
-prefix=/home/tobyzxj/workspace/linux/libs/build-out
+prefix=/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
