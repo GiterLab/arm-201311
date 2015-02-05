@@ -1,0 +1,12 @@
+prefix=/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: liburiparser
+Description: URI parsing and handling library
+
+Version: 0.8.1
+URL: http://uriparser.sourceforge.net/
+Libs: -L${libdir} -luriparser
+Cflags: -I${includedir}
