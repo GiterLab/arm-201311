@@ -12,8 +12,8 @@
 LC_ALL=C
 export LC_ALL
 
-prefix="/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/"
-exec_prefix="/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/"
+prefix="/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr"
+exec_prefix="/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr"
 exec_prefix_set="no"
 includedir="/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/include"
 libdir="/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/lib"
@@ -143,7 +143,7 @@ fi
 
 if test "$echo_libs" = "yes" ; then
   libs="-lfreetype"
-  staticlibs="-lfreetype -lz -lpng12 -lz -lm"
+  staticlibs="-lfreetype -L/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/lib -lz -lbz2 -L/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/lib -lpng12 -lz -lm -L/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/lib -lharfbuzz"
   if test "$show_static" = "yes" ; then
     libs="$staticlibs"
   fi
