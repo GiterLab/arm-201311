@@ -1,0 +1,12 @@
+prefix=/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: xspf
+Description: XSPF playlist handling library
+
+Version: 1.2.0
+URL: http://libspiff.sourceforge.net/
+Libs: -L${libdir} -lxspf
+Cflags: -I${includedir}/xspf
