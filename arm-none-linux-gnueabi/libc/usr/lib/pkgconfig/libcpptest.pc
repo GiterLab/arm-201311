@@ -1,0 +1,12 @@
+prefix=/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libcpptest
+Description: C++ test suite
+Version: 1.1.2
+Libs: -L${libdir} -lcpptest
+Cflags: -I${includedir}
+
+
