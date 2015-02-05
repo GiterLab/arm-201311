@@ -1,1 +1,1 @@
-libpng12.pc
+libpng16.pc
