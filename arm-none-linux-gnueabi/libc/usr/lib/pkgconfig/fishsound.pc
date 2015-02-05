@@ -1,0 +1,12 @@
+prefix=/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: fishsound
+Description: Encode and decode Vorbis, Speex, FLAC audio
+Requires:  vorbis vorbisenc speex flac
+Version: 1.0.0
+Libs: -L${libdir} -lfishsound
+Libs.private: -L/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/lib -lvorbisenc   -L/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/lib -lvorbis   -L/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/lib -lspeex   -L/home/tobyzxj/tools/arm-2013.11/arm-none-linux-gnueabi/libc/usr/lib -lFLAC  
+Cflags: -I${includedir}
