@@ -1,1 +1,1 @@
-libpng16/png.h
+libpng12/png.h
