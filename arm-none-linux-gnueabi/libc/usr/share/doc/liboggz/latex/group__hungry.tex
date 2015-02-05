@@ -1,0 +1,99 @@
+\section{\-Writing with \-Oggz\-Hungry callbacks}
+\label{group__hungry}\index{\-Writing with Oggz\-Hungry callbacks@{\-Writing with Oggz\-Hungry callbacks}}
+
+
+\-You can add packets to the \-Oggz packet queue only when it is \char`\"{}hungry\char`\"{} by providing an \-Oggz\-Hungry callback.  
+
+
+\-You can add packets to the \-Oggz packet queue only when it is \char`\"{}hungry\char`\"{} by providing an \-Oggz\-Hungry callback. \-An \-Oggz\-Hungry callback will\-:
+\begin{DoxyItemize}
+\item \-Create an {\itshape ogg\-\_\-packet\/} structure
+\item \-Add it to the packet queue with \doxyref{oggz\-\_\-write\-\_\-feed()}{p.}{group__write__api_ga6ccaceb107db1fd2eae047dbdbaa5889}
+\end{DoxyItemize}
+
+\-Once you have set such a callback with \doxyref{oggz\-\_\-write\-\_\-set\-\_\-hungry\-\_\-callback()}{p.}{group__write__api_gaf362c030bc7a7f57cb23f2b863a59389}, simply call \doxyref{oggz\-\_\-write()}{p.}{group__write__api_ga3c97d94ea425d64546adf9c368b71904} or \doxyref{oggz\-\_\-write\-\_\-output()}{p.}{group__write__api_ga5606dff01964caec4582eb172fde0c1c} repeatedly, and \-Oggz will call your callback to provide packets when it is hungry.
+
+\-This process is illustrated in the following diagram\-:
+
+ 
+\begin{DoxyImage}
+\includegraphics[width=10cm]{hungry}
+\caption{\-Using \-Oggz\-Hungry}
+\end{DoxyImage}
+
+
+\-The following example code generates a stream of ten packets, each containing a single byte ('\-A', '\-B', ... , '\-J')\-:
+
+
+\begin{DoxyCodeInclude}
+
+#include <stdlib.h> /* exit */
+#include "oggz/oggz.h"
+
+static long serialno;
+static ogg_int64_t granulepos = 0;
+static ogg_int64_t packetno = 0;
+
+static int
+hungry (OGGZ * oggz, int empty, void * user_data)
+{
+  ogg_packet op;
+  unsigned char buf[1];
+
+  buf[0] = 'A' + (int)packetno;
+
+  op.packet = buf;
+  op.bytes = 1;
+  op.granulepos = granulepos;
+  op.packetno = packetno;
+
+  if (packetno == 0) op.b_o_s = 1;
+  else op.b_o_s = 0;
+
+  if (packetno == 9) op.e_o_s = 1;
+  else op.e_o_s = 0;
+
+  oggz_write_feed (oggz, &op, serialno, OGGZ_FLUSH_AFTER, NULL);
+
+  granulepos += 100;
+  packetno++;
+
+  return 0;
+}
+
+int
+main (int argc, char * argv[])
+{
+  char * progname, * filename = NULL;
+  OGGZ * oggz;
+  long n;
+
+  progname = argv[0];
+  if (argc > 1) filename = argv[1];
+
+  if (filename) {
+    oggz = oggz_open (filename, OGGZ_WRITE);
+  } else {
+    oggz = oggz_open_stdio (stdout, OGGZ_WRITE);
+  }
+
+  if (oggz == NULL) {
+    fprintf (stderr, "%s: Error creating oggz\n", progname);
+    exit (1);
+  }
+
+  serialno = oggz_serialno_new (oggz);
+
+  if (oggz_write_set_hungry_callback (oggz, hungry, 1, NULL) == -1) {
+    fprintf (stderr, "%s: Error setting OggzHungry callback\n", progname);
+    exit (1);
+  }
+
+  while ((n = oggz_write (oggz, 32)) > 0);
+
+  oggz_close (oggz);
+
+  exit (0);
+}
+\end{DoxyCodeInclude}
+ 
